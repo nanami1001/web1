@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="box-container">
+
+    <!-- 首頁資訊 -->
+    <div class="resize-box">
+        <h2>首頁資訊</h2>
+        <p>歡迎來到新光三越台南小北門店！這裡您可以查看店鋪資訊、最新活動以及其他內容。</p>
+    </div>
+
+    <!-- 評價紀錄 -->
+    <div class="resize-box">
+        <h2>評價紀錄</h2>
+        {% for r in ratings %}
+            <p>{{ r.user.username }}: {{ r.score }} 分</p>
+        {% else %}
+            <p>目前沒有評價</p>
+        {% endfor %}
+    </div>
+
+    <!-- 貼文推薦 -->
+    <div class="resize-box">
+        <h2>貼文推薦</h2>
+        {% if recent_posts %}
+            <ul class="recommended-posts">
+            {% for p in recent_posts %}
+                <li>
+                    <a href="{{ url_for('posts.post', post_id=p.id) }}"><strong>{{ p.title }}</strong></a>
+                    <div class="meta">by {{ p.author.username }} · {{ p.date_posted.strftime('%Y-%m-%d') }}</div>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>目前沒有推薦貼文</p>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}

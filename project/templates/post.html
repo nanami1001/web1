@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+  <article class="media content-section">
+    <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+    <div class="media-body">
+      <div class="article-metadata">
+        <a class="mr-2" href="#">{{ post.author.username }}</a>
+        <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+        {% if post.author == current_user %}
+          <div>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('posts.update_post', post_id=post.id) }}">更新</a>
+            <form style="display:inline;" action="{{ url_for('posts.delete_post', post_id=post.id) }}" method="POST">
+                <input class="btn btn-danger btn-sm m-1" type="submit" value="刪除">
+            </form>
+          </div>
+        {% endif %}
+      </div>
+      <h2 class="article-title">{{ post.title }}</h2>
+      {% if post.image_file %}
+        <div class="mb-3">
+          <img src="{{ url_for('static', filename='post_pics/' + post.image_file) }}" alt="post image" class="img-fluid">
+        </div>
+      {% endif %}
+      <p class="article-content">{{ post.content }}</p>
+    </div>
+  </article>
+{% endblock content %}

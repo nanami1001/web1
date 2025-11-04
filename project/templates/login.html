@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="resize-box">
+    <h2>會員登入</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div>{{ form.username.label }} {{ form.username }}</div>
+        <div>{{ form.password.label }} {{ form.password }}</div>
+        <div>{{ form.submit }}</div>
+    </form>
+    <p>還沒有帳號？<a href="{{ url_for('auth.register', next=request.args.get('next')) }}">立即註冊</a></p>
+</div>
+{% endblock %}

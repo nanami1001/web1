@@ -1,0 +1,336 @@
+/* 全局設定 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: url("../static/a2f35789-a1a0-87a9-ba1a-df894bf8af65_620.jpg") no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    color: #111111;
+    overflow-x: hidden;
+}
+
+/* 背景朦布 + 遮罩 */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5); /* 白色半透明 70% */
+    backdrop-filter: blur(6px);           /* 模糊效果 */
+    z-index: -1; /* 確保在內容後方 */
+}
+
+/* 頁首 */
+header {
+    background: rgba(255, 255, 255, 0.5);
+    padding: 1.5rem 2rem;
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #111111;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #dcdcdc;
+    backdrop-filter: blur(4px);
+}
+
+/* 導覽列容器 */
+.link-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+/* 導覽列連結 */
+.link-container a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+/* 連結懸停效果 */
+.link-container a:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: #000;
+    transform: translateY(-1px);
+}
+
+/* 連結點擊效果 */
+.link-container a:active {
+    transform: translateY(0);
+}
+
+/* 連結底部橫線效果 */
+.link-container a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    background-color: #333;
+    transition: all 0.3s ease;
+}
+
+.link-container a:hover::after {
+    width: 80%;
+    left: 10%;
+}
+
+/* 當前頁面的連結樣式 */
+.link-container a.active {
+    color: #000;
+    font-weight: 600;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+/* 登入/註冊按鈕特殊樣式 */
+.link-container a[href*="login"],
+.link-container a[href*="register"] {
+    background: #4a90e2;
+    color: white;
+    padding: 0.5rem 1.2rem;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.link-container a[href*="login"]:hover,
+.link-container a[href*="register"]:hover {
+    background: #357abd;
+    transform: translateY(-1px);
+}
+
+/* 登出按鈕樣式 */
+.link-container a[href*="logout"] {
+    color: #e74c3c;
+    border: 1px solid #e74c3c;
+    padding: 0.4rem 1rem;
+}
+
+.link-container a[href*="logout"]:hover {
+    background: #e74c3c;
+    color: white;
+}
+
+/* 導覽列中的帳戶連結 */
+.nav-account {
+    display: flex !important;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(0, 0, 0, 0.05) !important;
+    border-radius: 25px !important;
+    padding: 0.3rem 1rem !important;
+}
+
+/* 導覽列中的頭像 */
+.nav-profile-pic {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.nav-account:hover .nav-profile-pic {
+    transform: scale(1.1);
+}
+}
+
+/* 導航欄中的帳戶連結 */
+.nav-account {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* 導航欄中的頭像 */
+.nav-profile-pic {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff;
+}
+
+/* 帳戶頁面頭像 */
+.account-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 2rem;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* 帳戶資訊區塊 */
+.content-section {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin: 2rem auto;
+    max-width: 800px;
+}
+
+/* 帳戶標題 */
+.account-heading {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+/* 表單組件 */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-control-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.form-control-file {
+    margin: 1rem 0;
+}
+    background: rgba(249, 249, 249, 0.7);
+    padding: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+    backdrop-filter: blur(4px);
+}
+
+.link-container a {
+    text-decoration: none;
+    color: #111111;
+    font-weight: 600;
+    position: relative;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+}
+
+.link-container a::after {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background: #888888;
+    transition: width 0.3s ease;
+}
+
+.link-container a:hover {
+    color: #444444;
+}
+.link-container a:hover::after {
+    width: 100%;
+}
+
+/* 主要內容 */
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem 1rem;
+}
+
+.resize-box {
+    max-width: 700px;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 2rem;
+    border-radius: 16px;
+    text-align: center;
+    color: #111111;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e5e5;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    backdrop-filter: blur(6px);
+}
+.resize-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+.resize-box h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+.resize-box p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #333333;
+}
+
+/* 頁尾 */
+footer {
+    background: rgba(245, 245, 245, 0.85);
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666666;
+    border-top: 1px solid #dcdcdc;
+    backdrop-filter: blur(4px);
+}
+
+/* 響應式 */
+@media (max-width: 768px) {
+    .link-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    header {
+        font-size: 1.4rem;
+    }
+    .resize-box h2 {
+        font-size: 1.6rem;
+    }
+    .resize-box p {
+        font-size: 1rem;
+    }
+}
+
+
+/* 調整 resize-box 左側位置 */
+.resize-box {
+    max-width: 700px;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 2rem;
+    border-radius: 16px;
+    color: #111111;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e5e5;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    backdrop-filter: blur(6px);
+    margin-left: 2rem; /* 左側間距 */
+}

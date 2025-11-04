@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="resize-box">
+    <h2>歡迎光臨</h2>
+    <p>
+        新光三越台南小北門店，結合潮流品牌、特色餐飲與高空露台，
+        帶來多元購物與休憩體驗。
+    </p><p>
+    </p>
+</div>
+<div class="resize-box">
+    <h2>顧客評價</h2>
+    {% if ratings %}
+        {% for r in ratings %}
+        <div class="review">
+            <strong>{{ r.user.username }}</strong>：評分 {{ r.score }}/5
+            <p>{{ r.comment }}</p>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>目前尚無評價。</p>
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="resize-box">
+    <h2>商店評價</h2>
+
+    {% if current_user.is_authenticated %}
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div>{{ form.score.label }} {{ form.score }}</div>
+        <div>{{ form.comment.label }} {{ form.comment }}</div>
+        <div>{{ form.submit }}</div>
+    </form>
+    {% else %}
+    <p>⚠️ 請先登入才能使用評價功能。</p>
+    <a href="{{ url_for('auth.login') }}">前往登入</a>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="resize-box">
+    <h2>二次驗證</h2>
+    <p>請輸入你的驗證碼 (Google Authenticator 或 Authy)</p>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.token.label }}<br>
+        {{ form.token(size=6) }}<br><br>
+        {{ form.submit(class="btn") }}
+    </form>
+</div>
+{% endblock %}

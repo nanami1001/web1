@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title if title else "新光三越台南小北門店" }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header>新光三越台南小北門店</header>
+
+<nav class="link-container">
+    <a href="{{ url_for('main.home') }}" class="{{ 'active' if request.endpoint == 'main.home' }}">首頁</a>
+    <a href="{{ url_for('main.about') }}" class="{{ 'active' if request.endpoint == 'main.about' }}">關於我們</a>
+    <a href="{{ url_for('main.location') }}" class="{{ 'active' if request.endpoint == 'main.location' }}">店家位置</a>
+
+    {# 評價入口：若已登入導向 /rate（可提交評價），否則導向登入畫面 #}
+    {% if current_user.is_authenticated %}
+        <a href="{{ url_for('posts.new_post') }}" class="{{ 'active' if request.endpoint == 'posts.new_post' }}">新增貼文</a>
+        <a href="{{ url_for('main.rate') }}" class="{{ 'active' if request.endpoint == 'main.rate' }}">評價</a>
+        <a href="{{ url_for('account.account') }}" class="nav-account {{ 'active' if request.endpoint == 'account.account' }}">
+            <img class="nav-profile-pic" src="{{ url_for('static', filename='profile_pics/' + current_user.image_file) }}" alt="Profile Picture">
+            帳戶管理
+        </a>
+        <a href="{{ url_for('auth.logout') }}" class="nav-logout">登出（{{ current_user.username }}）</a>
+    {% else %}
+        <a href="{{ url_for('auth.register') }}" class="{{ 'active' if request.endpoint == 'auth.register' }}">註冊</a>
+        <a href="{{ url_for('auth.login') }}" class="{{ 'active' if request.endpoint == 'auth.login' }}">登入</a>
+    {% endif %}
+</nav>
+
+<main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+</main>
+
+<footer>© 2025 新光三越台南小北門店 — 服務專線 (06) 281-9000</footer>
+</body>
+</html>

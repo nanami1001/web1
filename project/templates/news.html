@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>最新消息 - 新光三越台南小北門店</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <header>新光三越台南小北門店</header>
+
+  <nav class="link-container">
+    <a href="{{ url_for('home') }}">首頁</a>
+    <a href="{{ url_for('about') }}">關於我們</a>
+    <a href="{{ url_for('location') }}">店鋪資訊</a>
+    <a href="{{ url_for('news') }}">最新消息</a>
+        <a href="{{ url_for('register') }}">註冊</a>
+        <a href="{{ url_for('login') }}">登入</a>
+  </nav>
+
+  <main>
+    <div class="resize-box">
+      <h2>最新消息</h2>
+      <p>
+        🎉 新光三越台南小北門店於 2025 年 8 月 29 日正式試營運！  
+        眾多潮流品牌、美食餐廳、以及首度進駐的日本 LOPIA 超市同步登場，
+        期待與您共享全新購物體驗。
+      </p>
+    </div>
+  </main>
+
+  <footer>
+    © 2025 新光三越台南小北門店
+  </footer>
+
+</body>
+</html>
