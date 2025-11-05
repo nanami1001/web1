@@ -5,11 +5,45 @@
     <h2>會員註冊</h2>
     <form method="POST">
         {{ form.hidden_tag() }}
-        <div>{{ form.username.label }} {{ form.username }}</div>
-        <div>{{ form.email.label }} {{ form.email }}</div>
-        <div>{{ form.password.label }} {{ form.password }}</div>
-        <div>{{ form.confirm_password.label }} {{ form.confirm_password }}</div>
-        <div>{{ form.submit }}</div>
+        <div class="form-group">
+            {{ form.username.label }} 
+            {{ form.username(class="form-control") }}
+            {% if form.username.errors %}
+                {% for error in form.username.errors %}
+                    <div class="error-message">{{ error }}</div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.email.label }}
+            {{ form.email(class="form-control") }}
+            {% if form.email.errors %}
+                {% for error in form.email.errors %}
+                    <div class="error-message">{{ error }}</div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.password.label }}
+            {{ form.password(class="form-control") }}
+            {% if form.password.errors %}
+                {% for error in form.password.errors %}
+                    <div class="error-message">{{ error }}</div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.confirm_password.label }}
+            {{ form.confirm_password(class="form-control") }}
+            {% if form.confirm_password.errors %}
+                {% for error in form.confirm_password.errors %}
+                    <div class="error-message">{{ error }}</div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
     </form>
     <p>已經有帳號？<a href="{{ url_for('auth.login', next=request.args.get('next')) }}">立即登入</a></p>
 </div>

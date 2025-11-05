@@ -24,7 +24,8 @@ def register():
         user = User(
             username=form.username.data,
             email=form.email.data,
-            password=hashed_pw
+            password=hashed_pw,
+            image_file='default.jpg'  # 確保新用戶有預設頭像
         )
         db.session.add(user)
         db.session.commit()

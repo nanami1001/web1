@@ -13,7 +13,8 @@ def account():
     form = UpdateAccountForm()
     if form.validate_on_submit():
         if form.picture.data:
-            filename = secure_filename(form.picture.data.filename)
+            # 不直接用 secure_filename 去改變原始檔名，改由 save_picture 內部判斷副檔名並產生安全檔名
+            filename = form.picture.data.filename
             if allowed_file(filename):
                 picture_file = save_picture(form.picture.data)
                 current_user.image_file = picture_file
@@ -27,6 +28,6 @@ def account():
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email
-    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    image_file = url_for('static', filename='profile_pics/' + (current_user.image_file or 'default.jpg'))
     return render_template('account.html', title='帳戶管理',
                            image_file=image_file, form=form)
