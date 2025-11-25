@@ -58,3 +58,12 @@ def delete_post(post_id):
     db.session.commit()
     flash('文章已刪除！', 'success')
     return redirect(url_for('main.home'))
+
+
+@posts_bp.route('/posts')
+def posts_list():
+    """Paginated list of posts. Uses safe, minimal template for pagination controls."""
+    page = request.args.get('page', 1, type=int)
+    pagination = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
+    posts = pagination.items
+    return render_template('posts_list.html', posts=posts, pagination=pagination)

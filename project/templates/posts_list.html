@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="content-section">
+  <h2>所有貼文</h2>
+  {% if posts %}
+    <ul class="posts-list">
+      {% for p in posts %}
+        <li>
+          <a href="{{ url_for('posts.post', post_id=p.id) }}"><strong>{{ p.title }}</strong></a>
+          <div class="meta">by {{ p.author.username }} · {{ p.date_posted.strftime('%Y-%m-%d') }}</div>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <nav aria-label="Posts pagination">
+      <ul class="pagination">
+        {% if pagination.has_prev %}
+          <li class="page-item"><a class="page-link" href="{{ url_for('posts.posts_list', page=pagination.prev_num) }}">&laquo; Prev</a></li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">&laquo; Prev</span></li>
+        {% endif %}
+
+        <li class="page-item disabled"><span class="page-link">第 {{ pagination.page }} 頁 / 共 {{ pagination.pages }} 頁</span></li>
+
+        {% if pagination.has_next %}
+          <li class="page-item"><a class="page-link" href="{{ url_for('posts.posts_list', page=pagination.next_num) }}">Next &raquo;</a></li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">Next &raquo;</span></li>
+        {% endif %}
+      </ul>
+    </nav>
+
+  {% else %}
+    <p>目前沒有任何貼文。</p>
+  {% endif %}
+</div>
+{% endblock %}

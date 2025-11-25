@@ -13,6 +13,7 @@
     <a href="{{ url_for('main.home') }}" class="{{ 'active' if request.endpoint == 'main.home' }}">首頁</a>
     <a href="{{ url_for('main.about') }}" class="{{ 'active' if request.endpoint == 'main.about' }}">關於我們</a>
     <a href="{{ url_for('main.location') }}" class="{{ 'active' if request.endpoint == 'main.location' }}">店家位置</a>
+    <a href="{{ url_for('posts.posts_list') }}" class="{{ 'active' if request.endpoint == 'posts.posts_list' }}">推薦貼文</a>
 
     {# 評價入口：若已登入導向 /rate（可提交評價），否則導向登入畫面 #}
     {% if current_user.is_authenticated %}
