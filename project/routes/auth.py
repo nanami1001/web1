@@ -9,6 +9,15 @@ import pyotp
 import qrcode
 import io
 import base64
+from project.forms import RequestResetForm, ResetPasswordForm
+from project.utils.mailer import send_reset_email as send_reset_email_util
+import time
+
+# In-memory cooldown tracker for reset requests (dev use only). In production
+# use a persistent rate-limiter like Redis so limits persist across processes.
+RESET_REQUEST_COOLDOWN = 300  # seconds (5 minutes)
+_reset_request_ts = {}
+from flask import url_for, current_app
 
 auth = Blueprint('auth', __name__)
 
@@ -126,3 +135,55 @@ def two_factor_setup():
             flash('驗證碼錯誤，請重試', 'danger')
 
     return render_template('two_factor_setup.html', form=form, qr_b64=qr_b64, secret=secret)
+
+
+# Use the centralized mailer utility (project/utils/mailer.py)
+
+
+@auth.route('/reset_password', methods=['GET', 'POST'])
+def reset_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.home'))
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        # Normalize email to avoid duplicates
+        email = form.email.data.strip().lower()
+
+        last = _reset_request_ts.get(email)
+        now = time.time()
+        if last and (now - last) < RESET_REQUEST_COOLDOWN:
+            remaining = int(RESET_REQUEST_COOLDOWN - (now - last))
+            flash(f'訊息頻發：請於 {remaining} 秒後再試。', 'warning')
+            return redirect(url_for('auth.reset_request'))
+
+        user = User.query.filter_by(email=email).first()
+        ok = send_reset_email_util(user)
+        if ok:
+            # mark timestamp so user can't re-request immediately
+            _reset_request_ts[email] = time.time()
+            flash('已寄出重設密碼信件，請檢查您的郵件。', 'info')
+            return redirect(url_for('auth.login'))
+        else:
+            # flash a short non-sensitive message (do not expose tokens)
+            flash('重設密碼郵件失敗', 'danger')
+            # re-render minimal form without explanatory text to avoid repeating info
+            return render_template('reset_request.html', form=form, show_form=False)
+    return render_template('reset_request.html', form=form)
+
+
+@auth.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_token(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('main.home'))
+    user = User.verify_reset_token(token)
+    if user is None:
+        flash('無效或過期的 token', 'warning')
+        return redirect(url_for('auth.reset_request'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        hashed_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user.password = hashed_pw
+        db.session.commit()
+        flash('密碼已更新，您現在可以登入。', 'success')
+        return redirect(url_for('auth.login'))
+    return render_template('reset_token.html', form=form)

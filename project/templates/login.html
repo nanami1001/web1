@@ -8,6 +8,7 @@
         <div>{{ form.password.label }} {{ form.password }}</div>
         <div>{{ form.submit }}</div>
     </form>
+    <p><a href="{{ url_for('auth.reset_request') }}">忘記密碼？點此重設</a></p>
     <p>還沒有帳號？<a href="{{ url_for('auth.register', next=request.args.get('next')) }}">立即註冊</a></p>
 </div>
 {% endblock %}

@@ -1,6 +1,8 @@
 from project import db, login_manager
 from flask_login import UserMixin
 from datetime import datetime
+from itsdangerous import URLSafeTimedSerializer as Serializer
+from flask import current_app
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -16,6 +18,21 @@ class User(db.Model, UserMixin):
     image_file = db.Column(db.String(20), nullable=True, default='default.jpg')
     ratings = db.relationship('Rating', backref='user', lazy=True)
     posts = db.relationship('Post', backref='author', lazy=True)
+
+    def get_reset_token(self, expires_sec=1800):
+        # URLSafeTimedSerializer returns str tokens; include a salt for clarity
+        s = Serializer(current_app.config['SECRET_KEY'], salt='password-reset-salt')
+        return s.dumps({'user_id': self.id})
+
+    @staticmethod
+    def verify_reset_token(token, expires_sec=1800):
+        s = Serializer(current_app.config['SECRET_KEY'], salt='password-reset-salt')
+        try:
+            data = s.loads(token, max_age=expires_sec)
+            user_id = data.get('user_id')
+        except Exception:
+            return None
+        return User.query.get(user_id)
 
 class Rating(db.Model):
     id = db.Column(db.Integer, primary_key=True)

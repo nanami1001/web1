@@ -8,3 +8,5 @@ WTForms
 Pillow
 pyotp
 qrcode
+Flask-Mail
+itsdangerous

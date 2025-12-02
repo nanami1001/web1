@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>重設密碼</h2>
+  {%- if show_form is not defined or show_form %}
+  <p>輸入您註冊時使用的電子郵件，我們會寄出重設連結。</p>
+  <form method="POST">
+    {{ form.hidden_tag() }}
+    <div>
+      {{ form.email.label }}<br>
+      {{ form.email(size=40) }}
+      {% for error in form.email.errors %}
+        <div class="error">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div style="margin-top:12px;">{{ form.submit() }}</div>
+  </form>
+  {%- endif %}
+  {%- if not show_form %}
+    <p>若寄信失敗，請稍後再試或聯絡系統管理員處理。</p>
+    <p><a href="{{ url_for('auth.reset_request') }}">回到申請頁面</a></p>
+  {%- endif %}
+{% endblock %}

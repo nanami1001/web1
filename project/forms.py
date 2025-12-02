@@ -49,3 +49,19 @@ class PostForm(FlaskForm):
     content = TextAreaField('內容', validators=[DataRequired()])
     picture = FileField('貼文圖片', validators=[FileAllowed(['jpg', 'png', 'jpeg', 'gif'])])
     submit = SubmitField('發布')
+
+
+class RequestResetForm(FlaskForm):
+    email = StringField('電子郵件', validators=[DataRequired(), Email()])
+    submit = SubmitField('寄出密碼重設信')
+
+    def validate_email(self, field):
+        user = User.query.filter_by(email=field.data).first()
+        if user is None:
+            raise ValidationError('沒有這個電子郵件的帳號，請先註冊')
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('密碼', validators=[DataRequired(), Length(min=6)])
+    confirm_password = PasswordField('確認密碼', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('重設密碼')
