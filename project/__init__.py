@@ -14,11 +14,27 @@ login_manager.login_view = 'auth.login'
 login_manager.login_message = '請先登入才能使用評價功能'
 login_manager.login_message_category = 'info'
 
-def create_app():
+def create_app(config_name=None, config_class=None):
+    """Application factory. Pass either `config_class` or `config_name`.
+
+    `config_name` can be one of: 'development', 'production', 'testing'. If
+    neither is provided, `DevelopmentConfig` is used when FLASK_ENV is 'development',
+    otherwise ProductionConfig.
+    """
     app = Flask(__name__, instance_relative_config=True)
-    
-    from project.config import Config
-    app.config.from_object(Config)
+
+    # Resolve configuration class
+    if config_class is None:
+        from project.config import DevelopmentConfig, ProductionConfig, TestingConfig
+        env = config_name or os.environ.get('FLASK_ENV') or os.environ.get('APP_ENV')
+        if env == 'testing':
+            config_class = TestingConfig
+        elif env == 'development' or env == 'dev':
+            config_class = DevelopmentConfig
+        else:
+            config_class = ProductionConfig
+
+    app.config.from_object(config_class)
 
     db.init_app(app)
     bcrypt.init_app(app)

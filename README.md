@@ -48,6 +48,9 @@ flask db upgrade
 
 5. 運行應用：
 ```bash
+# 可選：設定環境，例如開發模式
+# Windows PowerShell 範例：
+$env:APP_ENV = 'development'
 python run.py
 ```
 
@@ -147,4 +150,9 @@ python run.py
 - 系統為了避免濫發重設郵件，對同一個 email 設置了冷卻時間（預設 5 分鐘）。若在冷卻內重複請求，頁面會顯示「訊息頻發：請於 XX 秒後再試」。
 - 目前採用記憶體內部緩存記錄重設請求時間（方便本機/開發環境），若要在生產環境使用，建議改用 Redis 或資料庫做全局限流，避免多進程/多實例繞過限制。
 
-要在本機驗證 SMTP 是否正確，建議使用 Mailtrap（或 smtp4dev）並在環境變數中設定 MAIL_SERVER/MAIL_PORT/EMAIL_USER/EMAIL_PASS 以及 MAIL_DEFAULT_SENDER，然後透過應用的重設流程觸發寄信。
+要在本機驗證 SMTP 是否正確，建議使用 Mailtrap（或 smtp4dev）並在環境變數中設定 `MAIL_SERVER`/`MAIL_PORT`/`EMAIL_USER`/`EMAIL_PASS` 以及 `MAIL_DEFAULT_SENDER`，然後透過應用的重設流程觸發寄信。
+
+選擇配置（Configuration）：
+
+- 使用 `APP_ENV` 或 `FLASK_ENV` 來選擇設定（`development` / `production` / `testing`）。
+- 範例：在 PowerShell 設定 `APP_ENV=development`，`run.py` 會載入 `DevelopmentConfig`。
