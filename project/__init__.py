@@ -15,21 +15,20 @@ login_manager.login_message = '請先登入才能使用評價功能'
 login_manager.login_message_category = 'info'
 
 def create_app(config_name=None, config_class=None):
-    """Application factory. Pass either `config_class` or `config_name`.
+    """建立 Flask app 的工廠函式。
 
-    `config_name` can be one of: 'development', 'production', 'testing'. If
-    neither is provided, `DevelopmentConfig` is used when FLASK_ENV is 'development',
-    otherwise ProductionConfig.
+    可傳入 `config_class` 或 `config_name`（例如 'development' / 'production' / 'testing'），
+    若未指定則會根據環境變數 `FLASK_ENV` 或 `APP_ENV` 選擇設定。
     """
     app = Flask(__name__, instance_relative_config=True)
 
-    # Resolve configuration class
+    # 決定要載入哪個設定類別
     if config_class is None:
         from project.config import DevelopmentConfig, ProductionConfig, TestingConfig
         env = config_name or os.environ.get('FLASK_ENV') or os.environ.get('APP_ENV')
         if env == 'testing':
             config_class = TestingConfig
-        elif env == 'development' or env == 'dev':
+        elif env in ('development', 'dev'):
             config_class = DevelopmentConfig
         else:
             config_class = ProductionConfig
